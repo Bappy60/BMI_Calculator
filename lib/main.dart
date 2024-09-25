@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ReusableContainer(
                 onPress: () => _onGenderSelected(Gender.male),
                 colour: selectedGender == Gender.male
-                    ? kActiveCardColour
+                    ? kSelectedGenderColor
                     : kInactiveCardColour,
                 childWidget: const GenderCard(
                     icon: Icon(
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ReusableContainer(
                 onPress: () => _onGenderSelected(Gender.female),
                 colour: selectedGender == Gender.female
-                    ? kActiveCardColour
+                    ? kSelectedGenderColor
                     : kInactiveCardColour,
                 childWidget: const GenderCard(
                     icon: Icon(

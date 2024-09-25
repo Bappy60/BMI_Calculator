@@ -11,7 +11,8 @@ const kBottomContainerColour = Color(0xFFEB1555);
 const kActiveCardColour = Color(0xFFFFFFFF);
 const kInactiveCardColour = Color(0xFF111328);
 
-const kGenderIconColor = Color(0xFF0012FF);
+const kSelectedGenderColor = Color(0xFFEB1555);
+const kGenderIconColor = Color(0xFFFFFFFF);
 const kRoundIconFillColor = Color(0xFF4C4F5E);
 const kDefaultTextColor = Color(0xFF8D8E98);
 const kDefaultNumberColor = Color(0xFFFFFFFF);

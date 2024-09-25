@@ -19,7 +19,7 @@ class GenderCard extends StatelessWidget {
       children: <Widget>[
         Icon(
           icon.icon,
-          size: 80.0,
+          size: 120.0,
           color: kGenderIconColor,
         ),
         const SizedBox(
