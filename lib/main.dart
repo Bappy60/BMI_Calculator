@@ -1,15 +1,10 @@
 import 'package:bmi_calculator/components/bmi_button.dart';
-import 'package:bmi_calculator/components/gender_card.dart';
+import 'package:bmi_calculator/components/gender_selector.dart';
 import 'package:bmi_calculator/consts/constants.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'components/reusable_container.dart';
 import 'components/value_adjuster.dart';
 
-enum Gender {
-  male,
-  female,
-}
 
 void main() {
   runApp(const MyApp());
@@ -60,8 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  String get bmiResult => _bmi.toStringAsFixed(1);
-
   void incrementWeight() {
     setState(() {
       weight++;
@@ -97,53 +90,15 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _buildGenderSelector(),
+          GenderSelector(
+              selectedGender: selectedGender ,
+              onGenderSelected: _onGenderSelected,
+          ),
           _buildGHeightSlider(),
           _buildWeightSetter(),
           _calculateBmiButton(),
         ],
       ),
-    );
-  }
-
-  Widget _buildGenderSelector() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                  child: ReusableContainer(
-                onPress: () => _onGenderSelected(Gender.male),
-                colour: selectedGender == Gender.male
-                    ? kSelectedGenderColor
-                    : kInactiveCardColour,
-                childWidget: const GenderCard(
-                    icon: Icon(
-                      Icons.male,
-                    ),
-                    label: kMaleKey),
-              )),
-              const SizedBox(width: 16),
-              Expanded(
-                  child: ReusableContainer(
-                onPress: () => _onGenderSelected(Gender.female),
-                colour: selectedGender == Gender.female
-                    ? kSelectedGenderColor
-                    : kInactiveCardColour,
-                childWidget: const GenderCard(
-                    icon: Icon(
-                      Icons.female,
-                    ),
-                    label: kFemaleKey),
-              )),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
