@@ -37,8 +37,20 @@ class _MyHomePageState extends State<MyHomePage> {
   var weight = 60.0;
   var age = 20.0;
 
-  void _onPressSelected() {
-    print("Selected");
+  // Variables to track which gender is selected
+  bool isMaleSelected = false;
+  bool isFemaleSelected = false;
+
+  void _onGenderSelected(String gender) {
+    setState(() {
+      if (gender == 'male') {
+        isMaleSelected = true;
+        isFemaleSelected = false;
+      } else {
+        isMaleSelected = false;
+        isFemaleSelected = true;
+      }
+    });
   }
 
   void _onPressPlus() {
@@ -55,10 +67,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   double _bmi = 0.0;
 
-  String calculateBMI() {
-    _bmi = weight / pow(height / 100, 2);
-    print(_bmi);
-    return _bmi.toStringAsFixed(1);
+   void calculateBMI() {
+    setState(() {
+      _bmi = weight / pow(height / 100, 2);
+    });
   }
 
   @override
@@ -72,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           _buildGHeightSlider(),
           _buildWeightSetter(),
           _calculateBmiButton(),
+          _bmiResult(),
         ],
       ),
     );
@@ -88,10 +101,12 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: _onPressSelected,
+                  onTap: () => _onGenderSelected('male'),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF111328),
+                      color: isMaleSelected
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF111328),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: const Column(
@@ -100,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Icon(
                           Icons.male,
                           size: 80.0,
+                          color: Color(0xFF0012FF),
                         ),
                         SizedBox(
                           height: 15.0,
@@ -119,10 +135,12 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(width: 16),
               Expanded(
                 child: GestureDetector(
-                  onTap: _onPressSelected,
+                  onTap: () => _onGenderSelected('female'),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF111328),
+                      color: isFemaleSelected
+                          ? const Color(0xFFFFFFFF)
+                          : const Color(0xFF111328),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: const Column(
@@ -131,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Icon(
                           Icons.female,
                           size: 80.0,
+                          color: Color(0xFF0012FF),
                         ),
                         SizedBox(
                           height: 15.0,
@@ -155,10 +174,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildGHeightSlider() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
+    return Expanded(
       child: Container(
-        height: 330,
+        // height: 330,
         decoration: BoxDecoration(
           color: const Color(0xFF111328),
           borderRadius: BorderRadius.circular(15),
@@ -353,22 +371,37 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _calculateBmiButton() {
-    return GestureDetector(
-      onTap: calculateBMI,
+    return ElevatedButton(
+      onPressed: calculateBMI,
+      child: const Text("Calculate Your BMI",),
+    );
+  }
+
+  Widget _bmiResult() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
       child: Container(
-        color: const Color(0xFFEB1555),
-        margin: const EdgeInsets.only(top: 10.0),
-        padding: const EdgeInsets.only(bottom: 20.0),
-        width: double.infinity,
-        height: 80.0,
-        child: const Center(
-          child: Text(
-            "Calculate Your BMI",
-            style: TextStyle(
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
+        decoration: BoxDecoration(
+          color: const Color(0xFF111328),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Your BMI",
+              style: TextStyle(
+                fontSize: 25.0,
+                color: Color(0xFF8D8E98),
+              ),
             ),
-          ),
+            Text(
+              _bmi.toStringAsFixed(1),
+              style: const TextStyle(
+                fontSize: 35.0,
+              ),
+            ),
+          ],
         ),
       ),
     );
