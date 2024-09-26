@@ -3,6 +3,7 @@ import 'package:bmi_calculator/components/gender_selector.dart';
 import 'package:bmi_calculator/consts/constants.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'components/height_slider.dart';
 import 'components/value_adjuster.dart';
 
 
@@ -44,43 +45,28 @@ class _MyHomePageState extends State<MyHomePage> {
   Gender selectedGender = Gender.male;
 
   void _onGenderSelected(Gender gender) {
-    setState(() {
-      selectedGender = gender;
-    });
+    setState(() => selectedGender = gender);
   }
 
   void _calculateBMI() {
-    setState(() {
-      _bmi = weight / pow(height / 100, 2);
-    });
+    setState(()=> _bmi = weight / pow(height / 100, 2));
+    print(_bmi);
   }
 
   void incrementWeight() {
-    setState(() {
-      weight++;
-    });
+    setState(() => weight++);
   }
 
   void decrementWeight() {
-    setState(() {
-      weight--;
-    });
+    setState(() => weight--);
   }
 
   void incrementAge() {
-    setState(() {
-      age++;
-    });
+    setState(() => age++);
   }
 
   void decrementAge() {
-    setState(() {
-      age--;
-    });
-  }
-
-  void updateHeight(double newHeight) {
-    height = newHeight;
+    setState(() => age--);
   }
 
   @override
@@ -94,120 +80,33 @@ class _MyHomePageState extends State<MyHomePage> {
               selectedGender: selectedGender ,
               onGenderSelected: _onGenderSelected,
           ),
-          _buildGHeightSlider(),
-          _buildWeightSetter(),
-          _calculateBmiButton(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildGHeightSlider() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: kInactiveCardColour,
-            borderRadius: BorderRadius.circular(15),
+          HeightSlider(
+            height: height,
+            onHeightChanged: (newHeight) {
+              setState(() =>  height = newHeight);
+            },
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(
             children: [
-              const Text(
-                "HEIGHT",
-                style: kDefaultTextStyle,
+              ValueAdjuster(
+                title: "WEIGHT",
+                value: weight,
+                onIncrement: incrementWeight,
+                onDecrement: decrementWeight,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    height.toStringAsFixed(2),
-                    style: kDefaultNumberTextStyle
-                  ),
-                  const SizedBox(width: 2),
-                  const Text(
-                    "cm",
-                    style: kDefaultTextStyle
-                  ),
-                ],
-              ),
-              SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  inactiveTrackColor: kSliderInactiveTrackColor,
-                  activeTrackColor: kSliderActiveTrackColor,
-                  thumbColor: kSliderThumbColor,
-                  overlayColor: kSliderOverlayColor,
-                  thumbShape:
-                      const RoundSliderThumbShape(enabledThumbRadius: 15.0),
-                  overlayShape:
-                      const RoundSliderOverlayShape(overlayRadius: 30.0),
-                ),
-                child: Slider(
-                  value: height.toDouble(),
-                  min: kSliderMinValue,
-                  max: kSliderMaxValue,
-                  onChanged: (double newValue) {
-                    setState(() {
-                      height = newValue;
-                    });
-                  },
-                ),
+              ValueAdjuster(
+                title: "AGE",
+                value: age,
+                onIncrement: incrementAge,
+                onDecrement: decrementAge,
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildWeightSetter() {
-    return Row(
-      children: [
-        ValueAdjuster(
-          title: "WEIGHT",
-          value: weight,
-          onIncrement: incrementWeight,
-          onDecrement: decrementWeight,
-        ),
-        ValueAdjuster(
-          title: "AGE",
-          value: age,
-          onIncrement: incrementAge,
-          onDecrement: decrementAge,
-        ),
-      ],
-    );
-  }
-
-  Widget _calculateBmiButton() {
-    return BmiButton(
-        onTap: _calculateBMI,
-        buttonTitle: "CALCULATE YOUR BMI",
-    );
-  }
-
-  Widget _bmiResult() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: kInactiveCardColour,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Your BMI",
-              style: kDefaultTextStyle,
-            ),
-            Text(
-              _bmi.toStringAsFixed(1),
-              style: kDefaultNumberTextStyle,
-            ),
-          ],
-        ),
+          BmiButton(
+            onTap: _calculateBMI,
+            buttonTitle: "CALCULATE YOUR BMI",
+          ),
+        ],
       ),
     );
   }

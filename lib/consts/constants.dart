@@ -26,7 +26,7 @@ const kSliderMaxValue = 220.0;
 
 const kGenderLabelTextStyle = TextStyle(
   fontSize: 25.0,
-  color: kDefaultTextColor,
+  color: kActiveCardColour,
 );
 
 const kDefaultNumberTextStyle = TextStyle(
